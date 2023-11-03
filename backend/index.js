@@ -96,6 +96,8 @@ app.post("/signup",(req,res)=>{
 
 })
 
+
+
 app.get('/logout', (req, res) => {
     var email="";
     res.clearCookie('email');
