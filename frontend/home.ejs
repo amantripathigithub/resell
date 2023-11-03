@@ -4,8 +4,83 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resell</title>
+    <link rel="stylesheet" type="text/css" href="home.css">
+    <style>
+        /* Navigation bar styles */
+        .navbar {
+          background-color: #333;
+          padding: 10px;
+          display: flex;
+          justify-content: space-between;
+        }
+        
+        .nav-links {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+        }
+        
+        .nav-links li {
+          display: inline;
+          margin-right: 20px;
+        }
+        
+        .nav-links li:last-child {
+          margin-right: 0;
+        }
+        
+        .nav-links a {
+          text-decoration: none;
+          color: white;
+        }
+    
+        /* Login and Signup button styles */
+        .login-btn,
+        .signup-btn,
+        .logout-btn {
+          background-color: #007bff;
+          color: white;
+          padding: 10px 15px;
+          border: none;
+          border-radius: 3px;
+          cursor: pointer;
+          text-decoration: none;
+          text-align: center;
+          display:inline-block;
+        }
+    
+        .login-btn:hover,
+        .signup-btn:hover,
+        .logout-btn {
+          background-color: #0056b3;
+        }
+      </style>
 </head>
 <body>
     
+    <div class="navbar">
+        <ul class="nav-links">
+          <li><a href="./">Home</a></li>
+          <li><a href="./about">About</a></li>
+          <li><a href="./contact">Contact</a></li>
+          <% if (email==="") { %>
+            <a href="./login" class="login-btn">Login</a>
+            <a href="./signup" class="signup-btn">Signup</a>
+            <% } else { %>
+                <a href="./logout" class="logout-btn">Logout</a>
+              <% } %>
+        
+        
+    </ul>
+      </div>
+
+    <div class="card">
+        <img src="" alt="">
+        <div class="card-body">
+          <h5 class="card-title"><%= email %></h5>
+          <p class="card-text">Price: $<%=  %></p>
+          <p class="card-text">City: <%=  %></p>
+        </div>
+      </div>
 </body>
 </html>

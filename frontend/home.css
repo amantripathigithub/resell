@@ -1,0 +1,41 @@
+/* Define the card container */
+.card {
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 10px;
+    overflow: hidden;
+  }
+  
+  /* Style the card image */
+  .card img {
+    width: 100%;
+    height: auto;
+  }
+  
+  /* Style the card body (text content) */
+  .card .card-body {
+    padding: 15px;
+  }
+  
+  /* Style the card title */
+  .card .card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin: 0;
+  }
+  
+  /* Style the card text (price and city) */
+  .card .card-text {
+    margin: 5px 0;
+    font-size: 1rem;
+  }
+  
+  /* Customize the appearance of the card view */
+  .card:hover {
+    background-color: #f5f5f5;
+    transform: translateY(-5px);
+    transition: background-color 0.2s, transform 0.2s;
+  }
+  
