@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.css">
+  <title>Your Profile</title>
+  <style>
+    /* public/css/style.css */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  text-align: center;
+}
+
+.profile-container {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 400px;
+}
+
+h1 {
+  color: #333;
+  font-size: 24px;
+}
+
+img {
+  max-width: 100%;
+  border-radius: 50%;
+  margin-top: 20px;
+}
+
+p {
+  color: #777;
+  font-size: 16px;
+  margin-top: 20px;
+}
+
+ /* Navigation bar styles */
+ .navbar {
+          background-color: #333;
+          padding: 10px;
+          display: flex;
+          justify-content: space-between;
+        }
+        
+        .nav-links {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+        }
+        
+        .nav-links li {
+          display: inline;
+          margin-right: 20px;
+        }
+        
+        .nav-links li:last-child {
+          margin-right: 0;
+        }
+        
+        .nav-links a {
+          text-decoration: none;
+          color: white;
+        }
+    
+        /* Login and Signup button styles */
+        .login-btn,
+        .signup-btn,
+        .logout-btn,
+        .profile-btn,
+        .add-btn {
+          background-color: #cb5020;
+          color: white;
+          padding: 10px 15px;
+          border: none;
+          border-radius: 3px;
+          cursor: pointer;
+          text-decoration: none;
+          text-align: center;
+          display:inline-block;
+        }
+    
+        .login-btn:hover,
+        .signup-btn:hover,
+        .logout-btn:hover,
+        .profile-btn:hover,
+        .add-btn:hover {
+          background-color: #b3a400;
+        }
+        .item-card {
+          display: inline-block;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      padding: 20px;
+      max-width: 300px;
+      text-align: center;
+    }
+
+    .item-image {
+      max-width: 100%;
+      border-radius: 10px;
+    }
+
+    .item-name {
+      margin: 10px 0;
+    }
+
+    .item-cost {
+      color: #777;
+      font-size: 16px;
+      margin: 5px 0;
+    }
+
+    .item-city {
+      color: #777;
+      font-size: 16px;
+      margin: 5px 0;
+    }
+
+    .item-status {
+      color: #777;
+      font-size: 16px;
+      margin: 5px 0;
+    }
+
+    .status-available {
+      color: green;
+    }
+
+    .status-sold {
+      color: red;
+    }
+
+    .details-button {
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <ul class="nav-links">
+          <li><a href="./">Home</a></li>
+          <li><a href="./about">About</a></li>
+          <li><a href="./contact">Contact</a></li>
+          <% if (email==="") { %>
+            <a href="./login" class="login-btn">Login</a>
+            <a href="./signup" class="signup-btn">Signup</a>
+            <% } else { %>
+                <a href="./logout" class="logout-btn">Logout</a>
+                <a href="./add" class="add-btn">Add Item</a>
+                
+              <% } %>
+        
+        
+    </ul>
+      </div>
+
+      <% if (email==="") { %>
+        <h2>must login first</h2>
+        <% } else { %>
+            
+          <div class="profile-container">
+            <div class="profile-image"></div>
+            <div class="profile-name"><%= user.name%></div>
+            <div class="profile-contact"><%= user.contact%></div>
+            <div class="profile-email"><%= user.email%></div>
+          </div>
+
+          <% for (let i = 0; i < items.length; i++) { %>
+            <div class="item-card">
+              <img src="your-image.jpg" alt="Product Image" class="item-image">
+              <h3 class="item-name"><%= items[i].name %></h3>
+              <p class="item-cost"><%= items[i].cost %></p>
+              <p class="item-city">City: <%= items[i].city %></p>
+              <p class="item-status">
+                Status: <span class="<%= items[i].status === 0 ? 'status-available' : 'status-sold' %>">
+                  <%= items[i].status === 0 ? 'Available' : 'Sold' %>
+                </span>
+              </p>
+              <button class="details-button">Details</button>
+            </div>
+          <% } %>
+
+          <% } %>
+
+
+
+
+  
+</body>
+</html>

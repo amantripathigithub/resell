@@ -14,6 +14,28 @@ let user = new Schema({
     contact: {
       type: Number
     },
+
+    items:[{
+      
+      name:{
+        type:String,
+      },
+      cost:{
+        type:Number,
+      },
+      city:{
+        type:String,
+      },
+      status:{
+        type:Number,
+      },
+      description:{
+        type:String,
+      },
+
+
+
+    }]
     
   });
 

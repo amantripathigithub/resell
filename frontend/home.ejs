@@ -37,8 +37,9 @@
         /* Login and Signup button styles */
         .login-btn,
         .signup-btn,
-        .logout-btn {
-          background-color: #007bff;
+        .logout-btn,
+        .profile-btn {
+          background-color: #cb5020;
           color: white;
           padding: 10px 15px;
           border: none;
@@ -51,8 +52,9 @@
     
         .login-btn:hover,
         .signup-btn:hover,
-        .logout-btn {
-          background-color: #0056b3;
+        .logout-btn:hover,
+        .profile-btn:hover {
+          background-color: #b3a400;
         }
       </style>
 </head>
@@ -68,6 +70,7 @@
             <a href="./signup" class="signup-btn">Signup</a>
             <% } else { %>
                 <a href="./logout" class="logout-btn">Logout</a>
+                <a href="./myprofile" class="profile-btn">My Profile</a>
               <% } %>
         
         

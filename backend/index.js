@@ -82,7 +82,7 @@ app.post("/signup",(req,res)=>{
             if (userExist)
                 return res.status(422).json({ error: "email exists already" });
 
-            const user = new users_resell({ name: username, email: email, password: password, contact: contact});
+            const user = new users_resell({ name: username, email: email, password: password, contact: contact, items:[]});
 
 
             user.save().then(() => {
@@ -104,6 +104,89 @@ app.get('/logout', (req, res) => {
     app.use(express.static("../frontend"));
     res.render(path.join(__dirname, "../frontend", "/home.ejs"),{email:email});
 });
+
+app.get('/myprofile', (req, res) => {
+
+    var userCookie = "";
+    var email = req.cookies.email;
+
+    if(email){
+        userCookie=email;
+    }
+
+    users_resell.findOne({ email: userCookie })
+        .then(async (userExist) => {
+            if (userExist){
+                items = userExist.items;
+                app.use(express.static("../frontend"));
+                res.render(path.join(__dirname, "../frontend", "/myprofile.ejs"),{email:userCookie,user:userExist,items:items});
+
+            }
+
+
+        }).catch(err => { console.log(err); });
+
+
+    
+});
+
+app.get('/add', (req, res) => {
+
+    var userCookie = "";
+    var email = req.cookies.email;
+
+    if(email){
+        userCookie=email;
+    }
+    
+
+
+    app.use(express.static("../frontend"));
+    res.render(path.join(__dirname, "../frontend", "/add.ejs"),{email:userCookie});
+});
+
+app.post('/add', async (req, res) => {
+    var userCookie = "";
+    var email = req.cookies.email;
+
+    if (email) {
+        userCookie = email;
+    }
+console.log(userCookie);
+
+
+
+users_resell.findOne({ email: userCookie })
+.then(async (userExist) => {
+    if (userExist)
+       {
+        temp = userExist.items;
+        temp.push({name:req.body.name,cost:req.body.cost,city:req.body.city,status:0,description:req.body.description});
+        try {
+            const result = await users_resell.updateOne(
+                { email: userCookie },
+                {
+                    $set: {
+                        items:temp,
+                    },
+                }
+            );
+
+            app.use(express.static("../frontend"));
+    res.render(path.join(__dirname, "../frontend", "/myprofile.ejs"),{email:userCookie,user:userExist,items:temp});
+        }catch (err) {
+            console.error(err);
+            res.status(500).send('Error updating document'); // Handle the error and send a response
+        }
+       }
+
+
+}).catch(err => { console.log(err); });
+
+
+    
+});
+
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}/`);
