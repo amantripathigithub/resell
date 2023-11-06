@@ -1,19 +1,28 @@
 const express = require('express');
 const app = express();
 const dotenv = require('dotenv');
+const multer = require('multer');
 const port = 4000; 
 app.set('view engine', 'ejs');
 const path = require("path");
 app.use(express.urlencoded({ extended: true }));
 const users_resell = require('./model/user');
 const mongoose = require('mongoose');
-
+const fs = require('fs');
 const cookieParser = require('cookie-parser'); 
 app.use(cookieParser());
 
 dotenv.config({ path: './file.env' });
 const DB = process.env.DATABASE;
 
+const bodyParser = require("body-parser");
+
+
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+
+app.use(bodyParser.json());
 
 mongoose.connect(DB).then(()=>{
     console.log("connected to database");
@@ -71,31 +80,6 @@ app.post('/login', (req, res) => {
 
 });
 
-app.post("/signup",(req,res)=>{
-    const email=req.body.email;
-    const username=req.body.username;
-    const password=req.body.password;
-    const contact = req.body.contact;
-    
-    users_resell.findOne({ email: email, password: password })
-        .then(async (userExist) => {
-            if (userExist)
-                return res.status(422).json({ error: "email exists already" });
-
-            const user = new users_resell({ name: username, email: email, password: password, contact: contact, items:[]});
-
-
-            user.save().then(() => {
-                app.use(express.static("../frontend"));
-    res.render(path.join(__dirname, "../frontend", "/login"));
-   
-            }).catch((err) => res.status(500).json({ error: "failed to register !! " }));
-
-
-        }).catch(err => { console.log(err); });
-
-})
-
 
 
 app.get('/logout', (req, res) => {
@@ -145,7 +129,58 @@ app.get('/add', (req, res) => {
     res.render(path.join(__dirname, "../frontend", "/add.ejs"),{email:userCookie});
 });
 
-app.post('/add', async (req, res) => {
+// Set up Multer for image uploads
+
+app.use(express.static('../frontend/static'));
+
+
+var storage = multer.diskStorage({
+    destination: "../frontend/static",
+    filename: (req, file, cb) => {
+        cb(null, file.fieldname + '_' + Date.now() + path.extname(file.originalname))
+
+    }
+})
+
+
+
+var upload = multer({
+    storage: storage
+}).single('image');
+
+
+
+
+app.post("/signup",upload,(req,res)=>{
+    const email=req.body.email;
+    const username=req.body.username;
+    const password=req.body.password;
+    const contact = req.body.contact;
+    const image = req.file.filename;
+    users_resell.findOne({ email: email, password: password })
+        .then(async (userExist) => {
+            if (userExist)
+                return res.status(422).json({ error: "email exists already" });
+
+            const user = new users_resell({ name: username, email: email, password: password, contact: contact,image:image, items:[]});
+
+
+
+            user.save().then(() => {
+                app.use(express.static("../frontend"));
+    res.render(path.join(__dirname, "../frontend", "/login"));
+   
+            }).catch((err) => res.status(500).json({ error: "failed to register !! " }));
+
+
+        }).catch(err => { console.log(err); });
+
+})
+
+
+
+
+app.post('/add', upload, (req, res) => {
     var userCookie = "";
     var email = req.cookies.email;
 
@@ -156,12 +191,14 @@ console.log(userCookie);
 
 
 
+
 users_resell.findOne({ email: userCookie })
 .then(async (userExist) => {
     if (userExist)
        {
         temp = userExist.items;
-        temp.push({name:req.body.name,cost:req.body.cost,city:req.body.city,status:0,description:req.body.description});
+        const image = req.file.filename;
+        temp.push({name:req.body.name,cost:req.body.cost,city:req.body.city,status:0,description:req.body.description,image:image});
         try {
             const result = await users_resell.updateOne(
                 { email: userCookie },
@@ -171,6 +208,8 @@ users_resell.findOne({ email: userCookie })
                     },
                 }
             );
+
+
 
             app.use(express.static("../frontend"));
     res.render(path.join(__dirname, "../frontend", "/myprofile.ejs"),{email:userCookie,user:userExist,items:temp});
@@ -186,6 +225,81 @@ users_resell.findOne({ email: userCookie })
 
     
 });
+
+
+
+
+app.post('/details', (req, res) => {
+    var userCookie = "";
+    var email = req.cookies.email;
+
+    if (email) {
+        userCookie = email;
+        const id=req.body.itemId;
+        users_resell.findOne({ email: userCookie })
+.then(async (userExist) => {
+    if (userExist)
+       {
+        temp = userExist.items;
+        //const image = req.file.filename;
+        let i=0;
+
+        //temp.push({name:req.body.name,cost:req.body.cost,city:req.body.city,status:0,description:req.body.description,image:image});
+        while(i<userExist.items.length){
+            
+            result = id.localeCompare(userExist.items[i]._id);
+            if(!result){
+                console.log("matched");
+                app.use(express.static("../frontend"));
+   return res.render(path.join(__dirname, "../frontend", "/details.ejs"),{email:userCookie,item:userExist.items[i]});
+                
+    break;
+            }
+            i++;
+            
+        }
+            
+       }
+
+
+}).catch(err => { console.log(err); });
+
+
+    }else {
+        app.use(express.static("../frontend"));
+    res.render(path.join(__dirname, "../frontend", "/login.ejs"));
+       
+    }
+
+    
+});
+
+
+app.post('/update_product', (req, res) => {
+
+    var userCookie = "";
+    var email = req.cookies.email;
+
+    if(email){
+        userCookie=email;
+
+        const id = req.body.itemId;
+        const newPrice = req.body.newPrice;
+        const desc = req.body.newDescription;
+        const status = req.body.newStatus;
+
+        console.log(status);
+
+        
+
+    }
+    
+
+
+    app.use(express.static("../frontend"));
+    res.render(path.join(__dirname, "../frontend", "/home.ejs"),{email:email});
+});
+
 
 
 app.listen(port, () => {

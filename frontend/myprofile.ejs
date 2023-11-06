@@ -169,17 +169,30 @@ p {
       <% if (email==="") { %>
         <h2>must login first</h2>
         <% } else { %>
+          <div class="profile-container" style="text-align: center;">
+            <div class="profile-image" style=" width: 150px; height: 150px; ">
+              <img src="static/<%= user.image %>" alt="Profile Image" style="width: 100%; height: 100%;  ">
+            </div>
+          
+            <div class="profile-name" style="font-size: 24px; font-weight: bold; color: #333; margin-top: 10px;">
+              <%= user.name %>
+            </div>
             
-          <div class="profile-container">
-            <div class="profile-image"></div>
-            <div class="profile-name"><%= user.name%></div>
-            <div class="profile-contact"><%= user.contact%></div>
-            <div class="profile-email"><%= user.email%></div>
+            <div class="profile-contact" style="font-size: 16px; color: #666;">
+              Contact: <%= user.contact %>
+            </div>
+            
+            <div class="profile-email" style="font-size: 16px; color: #666;">
+              Email: <%= user.email %>
+            </div>
           </div>
-
+          
+         
           <% for (let i = 0; i < items.length; i++) { %>
+
+           
             <div class="item-card">
-              <img src="your-image.jpg" alt="Product Image" class="item-image">
+              <img src="static/<%= items[i].image %>" alt="Product Image" class="item-image" style=" width: 150px; height: 150px; ">
               <h3 class="item-name"><%= items[i].name %></h3>
               <p class="item-cost"><%= items[i].cost %></p>
               <p class="item-city">City: <%= items[i].city %></p>
@@ -188,10 +201,15 @@ p {
                   <%= items[i].status === 0 ? 'Available' : 'Sold' %>
                 </span>
               </p>
-              <button class="details-button">Details</button>
+              <form action="/details" method="post">
+                <input type="hidden" name="itemId" value="<%= items[i]._id %>">
+                <button class="details-button" type="submit">Details</button>
+              </form>
+              
             </div>
+       
           <% } %>
-
+        
           <% } %>
 
 

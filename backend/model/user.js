@@ -1,6 +1,9 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+
+
+
 let user = new Schema({
     name:{
       type: String
@@ -14,6 +17,10 @@ let user = new Schema({
     contact: {
       type: Number
     },
+    image:{
+      type:String
+    },
+
 
     items:[{
       
@@ -31,6 +38,10 @@ let user = new Schema({
       },
       description:{
         type:String,
+      },
+
+      image:{
+        type:String
       },
 
 

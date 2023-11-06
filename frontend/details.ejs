@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Product Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        
+        h1 {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .product-details {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-image {
+            display: block;
+            margin: 0 auto;
+        }
+
+        .product-name {
+            text-align: center;
+            font-size: 24px;
+        }
+
+        .product-city {
+            text-align: center;
+            color: #777;
+        }
+
+        .product-price {
+            text-align: center;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+
+        .product-status {
+            text-align: center;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+
+        .status-available {
+            color: green;
+        }
+
+        .status-sold {
+            color: red;
+        }
+
+        .product-description {
+            margin-top: 20px;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        label, input, select, textarea {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <h1>Product Details</h1>
+    
+    <div class="product-details">
+        <img src="static/<%= item.image %>" alt="Product Image" class="product-image" style="width: 150px; height: 150px;">
+        <h2 class="product-name"><%= item.name %></h2>
+        <p class="product-city">City: <%= item.city %></p>
+        <p class="product-price">Price:  <span id="price"><%= item.cost %></span></p>
+        <p class="product-status">
+            Status: <span class="<%= item.status === 0 ? 'status-available' : 'status-sold' %>">
+                <%= item.status === 0 ? 'Available' : 'Sold' %>
+              </span>
+        </p>
+        <p class="product-description">Description: <%= item.description %></p>
+    </div>
+    
+    
+    <form method="post" action="/update_product" style="max-width: 400px; margin: 0 auto; background-color: #fff; border: 1px solid #ccc; border-radius: 5px; padding: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+
+        <input type="hidden" name="itemId" value="<%= item.id %>">
+
+        <label style="display: block; margin-bottom: 10px; font-weight: bold;" for="new-price">New Price:</label>
+        <input type="number" id="new-price" name="newPrice" value="<%= item.price %>" placeholder="<%= item.cost %>" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; margin-bottom: 15px;">
+
+        <label style="display: block; margin-bottom: 10px; font-weight: bold;" for="new-status">New Status:</label>
+        <select id="new-status" name="newStatus" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; margin-bottom: 15px;">
+            
+            <% if (item.status === 0) { %>
+                <option value="1" selected>Available</option>
+                <option value="0" >Sold</option>
+
+                <% } else { %>
+                    <option value="1">Available</option>
+                <option value="0" selected >Sold</option>
+                    <% } %>
+
+
+        </select>
+        
+
+        <label style="display: block; margin-bottom: 10px; font-weight: bold;" for="new-description">New Description:</label>
+        <textarea id="new-description" name="newDescription" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; margin-bottom: 15px;"><%= item.description %></textarea>
+
+        <button type="submit" style="background-color: #333; color: #fff; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;" >Update</button>
+    </form>
+</body>
+</html>
