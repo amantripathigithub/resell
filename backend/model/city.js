@@ -1,31 +1,17 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-
-
-
-let user = new Schema({
-    name:{
+let resell_city = new Schema({
+    city:{
       type: String
     },
-    email: {
-      type: String
-    },
-    password: {
-      type: String
-    },
-    contact: {
-      type: Number
-    },
-    image:{
-      type:String
-    },city:{
-      type:String,
-    },
-
-
     items:[{
-      
+      id:{
+        type: String,
+      },
+      email:{
+        type: String,
+      },
       name:{
         type:String,
       },
@@ -52,7 +38,7 @@ let user = new Schema({
     
   });
 
-  const user_model = mongoose.model("users_resell", user);
+  const city_model = mongoose.model("resell_city", resell_city);
 
-  module.exports = user_model;
+  module.exports = city_model;
   

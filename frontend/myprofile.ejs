@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="/css/style.css">
   <title>Your Profile</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
   <style>
     /* public/css/style.css */
 body {
@@ -116,7 +118,7 @@ p {
       margin: 5px 0;
     }
 
-    .item-city {
+    .item-city,.item-req {
       color: #777;
       font-size: 16px;
       margin: 5px 0;
@@ -144,6 +146,21 @@ p {
       border-radius: 5px;
       cursor: pointer;
     }
+
+    .message-icon {
+            position: relative;
+            display: inline-block;
+        }
+
+        .badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 5px 10px;
+        }
   </style>
 </head>
 <body>
@@ -201,6 +218,8 @@ p {
                   <%= items[i].status === 0 ? 'Available' : 'Sold' %>
                 </span>
               </p>
+              <p class="item-req">Requests : 33* </p>
+             
               <form action="/details" method="post">
                 <input type="hidden" name="itemId" value="<%= items[i]._id %>">
                 <button class="details-button" type="submit">Details</button>

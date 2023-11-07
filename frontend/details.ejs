@@ -94,7 +94,7 @@
     <div class="product-details">
         <img src="static/<%= item.image %>" alt="Product Image" class="product-image" style="width: 150px; height: 150px;">
         <h2 class="product-name"><%= item.name %></h2>
-        <p class="product-city">City: <%= item.city %></p>
+        <p class="product-city" value="<%= item.city %>" >City: <%= item.city %></p>
         <p class="product-price">Price:  <span id="price"><%= item.cost %></span></p>
         <p class="product-status">
             Status: <span class="<%= item.status === 0 ? 'status-available' : 'status-sold' %>">
@@ -110,18 +110,18 @@
         <input type="hidden" name="itemId" value="<%= item.id %>">
 
         <label style="display: block; margin-bottom: 10px; font-weight: bold;" for="new-price">New Price:</label>
-        <input type="number" id="new-price" name="newPrice" value="<%= item.price %>" placeholder="<%= item.cost %>" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; margin-bottom: 15px;">
+        <input type="number" id="new-price" name="newPrice" value="<%= item.cost %>" required placeholder="<%= item.cost %>" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; margin-bottom: 15px;">
 
         <label style="display: block; margin-bottom: 10px; font-weight: bold;" for="new-status">New Status:</label>
         <select id="new-status" name="newStatus" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; margin-bottom: 15px;">
             
             <% if (item.status === 0) { %>
-                <option value="1" selected>Available</option>
-                <option value="0" >Sold</option>
+                <option value="0" selected>Available</option>
+                <option value="1" >Sold</option>
 
                 <% } else { %>
-                    <option value="1">Available</option>
-                <option value="0" selected >Sold</option>
+                    <option value="0">Available</option>
+                <option value="1" selected >Sold</option>
                     <% } %>
 
 
@@ -129,8 +129,8 @@
         
 
         <label style="display: block; margin-bottom: 10px; font-weight: bold;" for="new-description">New Description:</label>
-        <textarea id="new-description" name="newDescription" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; margin-bottom: 15px;"><%= item.description %></textarea>
-
+        <textarea id="new-description" name="newDescription" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; margin-bottom: 15px;"><%= item.description %></textarea>
+        <input type="text" hidden value="<%= item.city %>" placeholder="<%= item.city %>" name="city" style="display: none;">
         <button type="submit" style="background-color: #333; color: #fff; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;" >Update</button>
     </form>
 </body>
